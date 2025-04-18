@@ -1,0 +1,26 @@
+/* variables.css */
+@font-face {
+  font-family: 'Cinzel';
+  src: url('../assets/fonts/Cinzel-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {    
+  --bg-color-main: #F4F1EE; /* Fondo principal (suave, cálido) */
+  --bg-color-alt: #FFFFFF; /* Fondo alternativo (tarjetas, secciones) */
+
+  --gray-color: #D6D3D1;/* Tonos grises sutiles para bordes o elementos secundarios */
+  --blue-color: #457B9D;/* Color principal (acentos, botones primarios, enlaces destacados) */
+  --green-color: #4CAF50; /* Verde (para confirmaciones, elementos positivos) */
+  --red-color: #E63946; /* Rojo (para alertas o acciones destructivas) */
+  --orange-color: #F4A261;/* Naranja (para avisos o elementos energéticos) */
+  --yellow-color: #FFD166; /* Amarillo suave (opcional, para resaltes o badges) */
+  --purple-color: #6A4C93; /* Morado refinado (acento alternativo) */
+  --white-color: #FAFAFA;/* Blanco sutil para textos o fondos destacados */
+  --clock_color: #457B9D; /* Color usado en el reloj (puedes mantener el azul principal o usar uno alternativo) */
+
+  --font-family-tittle: 'Cinzel', 'serif';
+  --font-family-main: "Poppins", sans-serif; /* Tipografía principal */
+  --text-color-main: #1A1A1A; /* Color principal del texto */
+}
