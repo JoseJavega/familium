@@ -18,9 +18,9 @@
   --yellow-color: #FFD166; /* Amarillo suave (opcional, para resaltes o badges) */
   --purple-color: #6A4C93; /* Morado refinado (acento alternativo) */
   --white-color: #FAFAFA;/* Blanco sutil para textos o fondos destacados */
-  --clock_color: #457B9D; /* Color usado en el reloj (puedes mantener el azul principal o usar uno alternativo) */
-
+  --text-color-main: #131313; /* pincipal del texto */
+  
   --font-family-tittle: 'Cinzel', 'serif';
   --font-family-main: "Poppins", sans-serif; /* Tipografía principal */
-  --text-color-main: #1A1A1A; /* Color principal del texto */
+
 }
