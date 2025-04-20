@@ -62,7 +62,7 @@ export class Database {
           }
         }, 100);  // Comprobar cada 100 ms si la base de datos ha sido abierta
       });
-    }
+    };
     // Ahora que estamos seguros de que la conexión está abierta, podemos cerrarla
     if (this.db) {
       this.db.close();
@@ -95,7 +95,7 @@ export class Database {
       const request = store.add(data);
 
       request.onsuccess = () => console.log("Elemento añadido.");
-      request.onerror = (e) => console.error("Error al añadir:", e.target.error);
+      request.onerror = (e) => console.error("Error al añadir - ", e.target.error);
     });
   };
 
@@ -106,12 +106,11 @@ export class Database {
         const store = tx.objectStore(table);
         const request = store.getAll();
 
-        request.onsuccess = (event) => {
-          resolve(event.target.result); // Devolvemos los datos cuando la consulta sea exitosa
+        request.onsuccess = (e) => {
+          resolve(e.target.result); // Devolvemos los datos cuando la consulta sea exitosa
         };
-
         request.onerror = (e) => {
-          console.error("Error al obtener los datos", e.target.error);
+          console.error("Error al obtener los datos - ", e.target.error);
           reject(e.target.error); // Rechazamos la promesa si ocurre un error
         };
       });
@@ -125,12 +124,11 @@ export class Database {
         const store = tx.objectStore(table);
         const request = store.get(id);
 
-        request.onsuccess = (event) => {
-          resolve(event.target.result); // Devolvemos los datos cuando la consulta sea exitosa
+        request.onsuccess = (e) => {
+          resolve(e.target.result); // Devolvemos los datos cuando la consulta sea exitosa
         };
-
         request.onerror = (e) => {
-          console.error("Error al obtener los datos", e.target.error);
+          console.error("Error al obtener los datos - ", e.target.error);
           reject(e.target.error); // Rechazamos la promesa si ocurre un error
         };
       });
@@ -138,27 +136,57 @@ export class Database {
   };
 
   update(table, data) {
-    //como el metodo put() de indezed, en caso de no existir añade, controlamos que solo actualice si existe
-    //const result = await this.db.getById(table, data.id);
-
     return new Promise((resolve, reject) => {
       this._withConnection(() => {
         const tx = this.db.transaction(table, "readwrite");
         const store = tx.objectStore(table);
         const request = store.update(data);
 
-        request.onsuccess = (event) => {
-          resolve(event.target.result); // Devolvemos los datos cuando la consulta sea exitosa
+        request.onsuccess = (e) => {
+          resolve(e.target.result); // Devolvemos los datos cuando la consulta sea exitosa
         };
-
         request.onerror = (e) => {
-          console.error("Error al actualizar los datos", e.target.error);
+          console.error("Error al actualizar los datos - ", e.target.error);
           reject(e.target.error); // Rechazamos la promesa si ocurre un error
         };
       });
     });
   };
 
-  remove(table, id) { };
+  remove(table, id) {
+    return new Promise((resolve, reject) => {
+      this._withConnection(() => {
+        const tx = this.db.transaction(table, "readwrite");
+        const store = tx.objectStore(table);
+        const request = store.delete(id);
 
+        request.onsuccess = (e) => {
+          resolve(e.target.result);
+        };
+        request.onerror = (e) => {
+          console.error("Error al intentar borrar el dato - ", e.target.error);
+          reject(e.target.error);
+        };
+      });
+    });
+  };
+
+  removeAll(table) {
+    return new Promise((resolve, reject) => {
+      this._withConnection(() => {
+        const tx = this.db.transaction(table, "readwrite");
+        const store = tx.objectStore(table);
+        const request = store.clear();
+
+        request.onsuccess = (e) => {
+          resolve(e.target.result);
+        };
+        reject.onerror = (e) => {
+          console.error(`Error al eliminar todos los datos de la tabla ${table} - `, e.target.error);
+          reject(e.target.error);
+        };
+      });
+    });
+  };
 };
+
