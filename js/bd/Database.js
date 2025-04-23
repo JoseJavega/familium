@@ -1,16 +1,16 @@
-import { dbConfig } from "../../config/config.js";
+import { settings } from "../../config/config.js";
 
 export class Database {
   constructor() {
     // general
-    this.name = dbConfig.name;
-    this.host = dbConfig.host;
-    this.port = dbConfig.port;
-    this.user = dbConfig.user;
-    this.password = dbConfig.password;
+    this.name = settings.dbConfig.name;
+    this.host = settings.dbConfig.host;
+    this.port = settings.dbConfig.port;
+    this.user = settings.dbConfig.user;
+    this.password = settings.dbConfig.password;
     // indexedBD
-    this.version = dbConfig.version;
-    this.objectStores = dbConfig.objectStores;
+    this.version = settings.dbConfig.version;
+    this.objectStores = settings.dbConfig.objectStores;
   }
 
   // Conexion para indexedBD
