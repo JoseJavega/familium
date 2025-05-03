@@ -77,9 +77,10 @@ export class Database {
   _withConnection(callback) {
     if (!this.isConnected()) {
       console.error("No hay conexión a la base de datos.");
-      return;
+      return false;
     };
     callback();
+    return true;
   };
 
   // Verificar si la conexion está abierta
@@ -155,21 +156,24 @@ export class Database {
 
   remove(table, id) {
     return new Promise((resolve, reject) => {
-      this._withConnection(() => {
-        const tx = this.db.transaction(table, "readwrite");
-        const store = tx.objectStore(table);
-        const request = store.delete(id);
+      const connected = this._withConnection(() => {
+        try {
+          const tx = this.db.transaction(table, "readwrite");
+          const store = tx.objectStore(table);
+          const request = store.delete(id);
 
-        request.onsuccess = (e) => {
-          resolve(e.target.result);
-        };
-        request.onerror = (e) => {
-          console.error("Error al intentar borrar el dato - ", e.target.error);
-          reject(e.target.error);
-        };
+          request.onsuccess = () => resolve();
+          request.onerror = (e) => reject(e.target.error);
+        } catch (err) {
+          reject(err);
+        }
       });
+
+      if (!connected) {
+        reject(new Error("No hay conexión a la base de datos."));
+      }
     });
-  };
+  }
 
   removeAll(table) {
     return new Promise((resolve, reject) => {
