@@ -1,12 +1,47 @@
-## Descripción 
+# Familium
 
-Familium es una aplicación web para la gestión de los datos de las personas y relaciones que conforman un árbol genealógico.<br>
-Está pensado para usarse de forma personal y poder alojarse en un servidor web simple ya que no utiliza backend, usando como espacio de almacenamiento la BBDD del navegador indexedDB. 
+**Familium** es una aplicación de genealogía personal desarrollada en JavaScript puro. Permite registrar, visualizar y gestionar árboles genealógicos, con almacenamiento local a través de IndexedDB y una interfaz orientada a la claridad y facilidad de uso.
 
-Se crea como ejercicio de estudio de desarrollo web, en vanilla Javascript y haciendo una aproximación al modelo MVC.<br>
-Desde el inicio se ha tratado de manejar una lógica de diseño que pudiera facilitar la escalabilidad y la migración del proyecto al uso de una base de datos relacional y su transformacion en una aplicación con uso de backend.
+## Funcionalidades principales
+- Añadir, editar y eliminar personas
+- Asignar relaciones familiares padres-hijos
+- Visualización y ordenamiento de la lista total de personas añadidas
+- Visualización del árbol genealógico en disposición vertical y horizontal
+- Persistencia de datos local usando IndexedDB
+- Configuración de idioma, tema y formato de fecha
 
-Implementa la clase Database.js con el código necesario para el manejo de los principales eventos de una BBDD, en este caso enfocado en indexedDB, de forma que la lógica de los controladores quede fuera del acceso a datos y podewr así migrar a otros formatos de almacenamiento.
+## Tecnologías utilizadas
+- JavaScript 
+- HTML y CSS puro
+- IndexedDB para almacenamiento
+- Estructura modular basada en controladores y vistas
+
+## Estructura del proyecto
+
+/src
+├── css/ 
+├── assets/ 
+├── js/
+│ ├── db/ 
+│ ├── controllers/ 
+│ ├── models/ 
+│ └── views/
+├── config/ 
+│ └── config.js
+├── app.js # Entrada principal JavaScript
+└── index.html 
 
 
+## Configuración inicial
+Los ajustes generales se encuentran en `src/config/config.js`, incluyendo:
 
+- Parámetros de conexión para IndexedDB
+- Opciones de visualización (tema, idioma, disposición del árbol, etc)
+
+Una vez iniciada la aplicacion y creados los storages necesarios, la configuración de visualización permanece en indexedDB para poder modificarla según elecciones del usuario
+
+## Estado del desarrollo
+Actualmente en desarrollo activo.
+
+## Licencia
+Uso personal.
