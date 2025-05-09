@@ -1,4 +1,4 @@
-class PersonModel {
+export class PersonModel {
   constructor(db) {
     this.db = db; // Conexión a la base de datos (instancia de Database)
     this.table = 'persons'; // Nombre del objectStore
@@ -22,5 +22,9 @@ class PersonModel {
 
   async remove(id) {
     return this.db.remove(this.table, id);
+  }
+
+  async removeAll() {
+    return this.db.removeAll(this.table);
   }
 }
