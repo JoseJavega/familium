@@ -18,19 +18,18 @@
 
 ## Estructura del proyecto
 
-/src
-├── css/ 
-├── assets/ 
-├── js/
-│ ├── db/ 
-│ ├── controllers/ 
-│ ├── models/ 
-│ └── views/
-├── config/ 
-│ └── config.js
-├── app.js # Entrada principal JavaScript
-└── index.html 
-
+/src <br>
+├── css/ <br>
+├── assets/ <br>
+├── js/ <br>
+│ ├── db/ <br> 
+│ ├── controllers/ <br> 
+│ ├── models/ <br>
+│ └── views/ <br>
+├── config/ <br>
+│ └── config.js <br>
+├── app.js # Entrada principal JavaScript <br>
+└── index.html <br>
 
 ## Configuración inicial
 Los ajustes generales se encuentran en `src/config/config.js`, incluyendo:
