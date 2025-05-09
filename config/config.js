@@ -10,12 +10,14 @@ export const settings = {
     // "tablas" para indexedBD
     objectStores: [
       { name: 'persons', keyPath: 'id', autoIncrement: true },
+      { name: 'settings'},
     ]
   },
 
   appSettings: {
     theme: 'dark',
     language: 'es',
+    dateFormat:'es-ES',
     lastViewedPersonId: null,
     treeLayout: 'vertical',
     generationsToShow: 3

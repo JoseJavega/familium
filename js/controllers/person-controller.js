@@ -51,7 +51,7 @@ function getFormData() {
 
 // funcion auxiliar para reutilizar  codigo
 async function createPersonModel() {
-  const db = new Database();
+  const db = new Database(settings.dbConfig);
   await db.open();
   const model = new PersonModel(db);
   return { model, db };
