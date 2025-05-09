@@ -13,26 +13,27 @@ export class PersonView {
 
     formContainer.innerHTML = `
       <div class="container">
+        <img id="form-close-icon" src="./assets/icons/close-circle.svg" alt="cerrar ventana">
         <h2>Alta de nueva persona</h2>
         <form id="newPerson" method="modal">
           <div class="form-row">
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-sex" value="Hombre" id="newPerson-sex-male"/> 
-              <label class="newPerson-lbl" for="newPerson-sex-male">Hombre</label>               
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-male" value="male" tabindex="10"/> 
+              <label class="newPerson-lbl" for="newPerson-gender-male">Hombre</label>               
             </div>
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-sex" value="Mujer" id="newPerson-sex-female"/>
-              <label class="newPerson-lbl" for="newPerson-sex-female">Mujer</label>               
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-female" value="female" tabindex="10"/>
+              <label class="newPerson-lbl" for="newPerson-gender-female">Mujer</label>               
             </div>
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-sex" value="Desconocido" id="newPerson-sex-unknow"/>
-              <label class="newPerson-lbl" for="newPerson-sex-unknow">Desconocido</label> 
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-unknown" value="" checked tabindex="10"/>
+              <label class="newPerson-lbl" for="newPerson-gender-unknown">Desconocido</label> 
             </div>
           </div>
           <div class="form-row">
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-name">Nombre</label>
-              <input class="newPerson-input" id="newPerson-name" type="text">
+              <input class="newPerson-input" id="newPerson-name" type="text" autofocus>
             </div>
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-surname1">Primer apellido</label>
@@ -84,6 +85,43 @@ export class PersonView {
     formContainer.showModal();
   }
 
+  // Información de currentPerson
+  renderCurrentPerson(currentPerson) {
+    const personContainer = document.getElementById("sect-currentPerson");
+
+    const name = currentPerson.name ? currentPerson.name : "----";
+    const surname1 = currentPerson.surname1 ? currentPerson.surname1 : "----";
+    const surname2 = currentPerson.surname2 ? currentPerson.surname2 : "----";
+
+    let genderIcon = "";
+    switch (currentPerson.gender) {
+      case "male":
+        genderIcon = '"./assets/icons/male-sign.svg"'
+        break;
+      case "female":
+        genderIcon = '"./assets/icons/female-sign.svg"'
+        break;
+      default:
+        genderIcon = '"./assets/icons/question-sign.svg"'
+        break;
+    };
+
+    personContainer.innerHTML = `
+      <div class="currentPerson-header">
+        <img class="personHeader-gender-icon" src=${genderIcon} alt="genero"> 
+        <h2>${name} ${surname1} ${surname2}</h2>
+        <button><img class="personHeader-edit-icon" src="./assets/icons/edit.svg" alt="editar persona"></button>    
+      </div>
+      <p>Fecha de Nacimiento: ${currentPerson.dateBirth ?? ''}</p>
+      <p>Lugar de Nacimiento: ${currentPerson.placeBirth ?? ''}</p>
+      <p>Fecha de Defunción: ${currentPerson.dateDeath ?? ''}</p>
+      <p>Lugar de Defunción: ${currentPerson.placeDeath ?? ''}</p>
+      <p>Nombre del padre: ${currentPerson.fatherId ?? ''}</p>
+      <p>Nombre de la madre: ${currentPerson.motherId ?? ''}</p>
+      `;
+
+  }
+
   // Tabla de todas las personas, para formato escritorio
   renderPersonTable(allPersons) {
     let rows = "";
@@ -112,16 +150,18 @@ export class PersonView {
           ${rows}
         </tbody>
       </table>`;
+
+    this.renderTree();
   }
 
   // Lista de todas las personas, para formato mobile
-  renderPersonList(allPersons){
-    let listElements="";
-    allPersons.forEach(person=>{
-      const name=person.name?person.name:"----";
-      const surname1=person.apell1?person.apell1:"----";
-      const surname2=person.apell2?person.apell2:"----";
-      listElements+=`
+  renderPersonList(allPersons) {
+    let listElements = "";
+    allPersons.forEach(person => {
+      const name = person.name ? person.name : "----";
+      const surname1 = person.surname1 ? person.surname1 : "----";
+      const surname2 = person.surname2 ? person.surname2 : "----";
+      listElements += `
       <li data-id="${person.id}">
         <a>${name} ${surname1} ${surname2}</a>
         <spam><img src="./assets/icons/trash.svg" alt="eliminar persona"></spam>
@@ -129,10 +169,20 @@ export class PersonView {
     });
 
     const listContainer = document.getElementById('sect-allPersons');
-    listContainer.innerHTML=`
+    listContainer.innerHTML = `
       <ul class="personsList">
       ${listElements}
-      </ul>`; 
+      </ul>`;
   }
 
+  // Arbol genealogico gráfico
+  renderTree() {
+    const treeSection = document.getElementById('sect-tree');
+
+    treeSection.innerHTML = `<div class="treeDesing">
+    <p class="g2-1">Pablo</p>
+    <p class="g1">Jose</p>
+    <p class="g2-2">Carmen</p>  
+    </div>`;
+  }
 }
