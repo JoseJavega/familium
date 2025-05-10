@@ -1,3 +1,4 @@
+
 export class Database {
   constructor(dbConfig) {
     // general
@@ -72,7 +73,7 @@ export class Database {
   };
 
   // wrapper de la conexion
-  _withConnection(callback) {
+  #withConnection(callback) {
     if (!this.isConnected()) {
       console.error("No hay conexión a la base de datos.");
       return false;
@@ -88,7 +89,7 @@ export class Database {
 
   // METODOS
   add(table, data) {
-    this._withConnection(() => {
+    this.#withConnection(() => {
       const tx = this.db.transaction(table, "readwrite");
       const store = tx.objectStore(table);
       const request = store.add(data);
@@ -100,7 +101,7 @@ export class Database {
 
   getAll(table) {
     return new Promise((resolve, reject) => {
-      this._withConnection(() => {
+      this.#withConnection(() => {
         const tx = this.db.transaction(table, "readonly");
         const store = tx.objectStore(table);
         const request = store.getAll();
@@ -118,7 +119,7 @@ export class Database {
 
   getById(table, id) {
     return new Promise((resolve, reject) => {
-      this._withConnection(() => {
+      this.#withConnection(() => {
         const tx = this.db.transaction(table, "readonly");
         const store = tx.objectStore(table);
         const request = store.get(id);
@@ -136,7 +137,7 @@ export class Database {
 
   update(table, data) {
     return new Promise((resolve, reject) => {
-      this._withConnection(() => {
+      this.#withConnection(() => {
         const tx = this.db.transaction(table, "readwrite");
         const store = tx.objectStore(table);
         const request = store.update(data);
@@ -154,7 +155,7 @@ export class Database {
 
   remove(table, id) {
     return new Promise((resolve, reject) => {
-      const connected = this._withConnection(() => {
+      const connected = this.#withConnection(() => {
         try {
           const tx = this.db.transaction(table, "readwrite");
           const store = tx.objectStore(table);
@@ -175,7 +176,7 @@ export class Database {
 
   removeAll(table) {
     return new Promise((resolve, reject) => {
-      this._withConnection(() => {
+      this.#withConnection(() => {
         const tx = this.db.transaction(table, "readwrite");
         const store = tx.objectStore(table);
         const request = store.clear();
