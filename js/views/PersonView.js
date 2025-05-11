@@ -1,5 +1,34 @@
 export class PersonView {
 
+  #parseDataPerson(person,dateSetting){
+    // funcion para parsear los datos tipo texto
+    // el parámetro fallback de la función flecha define un valor por defecto para ese parámetro
+    const formatValue = (value, fallback = 'Desconocido') =>
+    value === null || value === '' ? `<span class="unknown">${fallback}</span>` : value;
+
+    // funcion para revisar si hay fecha válida y parsearla al formato local recibido
+    const formatDate = (date) => {
+      const parsedDate = new Date(date);
+      if (!date || isNaN(parsedDate.getTime())) {
+      return `<span class="unknown">Desconocida</span>`;
+      }else return parsedDate.toLocaleDateString(dateSetting);
+    };
+
+    //devolvemos todos los valores de currentPerson parseados por la funciones anteriores
+    return {
+      name: formatValue(person.name),
+      surname1: formatValue(person.surname1),
+      surname2: formatValue(person.surname2),
+      gender: formatValue(person.gender),
+      dateBirth: formatDate(person.dateBirth),
+      placeBirth: formatValue(person.placeBirth),
+      dateDeath: formatDate(person.dateDeath),
+      placeDeath: formatValue(person.placeDeath),
+      fatherId: formatValue(person.fatherId),
+      motherId: formatValue(person.motherId)
+    }
+  }
+
   // Formulario inicial para añadir persona y adaptable para editar a currentPerson
   renderInitialForm(error) {
     const formContainer = document.getElementById('sect-form-person');
@@ -26,7 +55,7 @@ export class PersonView {
               <label class="newPerson-lbl" for="newPerson-gender-female">Mujer</label>               
             </div>
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-gender" id="newPerson-gender-unknown" value="" checked tabindex="10"/>
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-unknown" value="Desconocido" checked tabindex="10"/>
               <label class="newPerson-lbl" for="newPerson-gender-unknown">Desconocido</label> 
             </div>
           </div>
@@ -86,15 +115,13 @@ export class PersonView {
   }
 
   // Información de currentPerson
-  renderCurrentPerson(currentPerson) {
+  renderCurrentPerson(currentPerson, dateSetting) {
     const personContainer = document.getElementById("sect-currentPerson");
-
-    const name = currentPerson.name ? currentPerson.name : "----";
-    const surname1 = currentPerson.surname1 ? currentPerson.surname1 : "----";
-    const surname2 = currentPerson.surname2 ? currentPerson.surname2 : "----";
+    //parsemos los datos de currentPerson a modo "vista"
+    const parsedPerson= this.#parseDataPerson(currentPerson,dateSetting);  
 
     let genderIcon = "";
-    switch (currentPerson.gender) {
+    switch (parsedPerson.gender) {
       case "male":
         genderIcon = '"./assets/icons/male-sign.svg"'
         break;
@@ -109,29 +136,31 @@ export class PersonView {
     personContainer.innerHTML = `
       <div class="currentPerson-header">
         <img class="personHeader-gender-icon" src=${genderIcon} alt="genero"> 
-        <h2>${name} ${surname1} ${surname2}</h2>
+        <h2>${parsedPerson.name} ${parsedPerson.surname1} ${parsedPerson.surname2}</h2>
         <button><img class="personHeader-edit-icon" src="./assets/icons/edit.svg" alt="editar persona"></button>    
       </div>
-      <p>Fecha de Nacimiento: ${currentPerson.dateBirth ?? ''}</p>
-      <p>Lugar de Nacimiento: ${currentPerson.placeBirth ?? ''}</p>
-      <p>Fecha de Defunción: ${currentPerson.dateDeath ?? ''}</p>
-      <p>Lugar de Defunción: ${currentPerson.placeDeath ?? ''}</p>
-      <p>Nombre del padre: ${currentPerson.fatherId ?? ''}</p>
-      <p>Nombre de la madre: ${currentPerson.motherId ?? ''}</p>
+      <p>Fecha de Nacimiento: ${parsedPerson.dateBirth}</p>
+      <p>Lugar de Nacimiento: ${parsedPerson.placeBirth}</p>
+      <p>Fecha de Defunción: ${parsedPerson.dateDeath}</p>
+      <p>Lugar de Defunción: ${parsedPerson.placeDeath}</p>
+      <p>Nombre del padre: ${parsedPerson.fatherId}</p>
+      <p>Nombre de la madre: ${parsedPerson.motherId}</p>
       `;
 
   }
 
   // Tabla de todas las personas, para formato escritorio
-  renderPersonTable(allPersons) {
+  renderPersonTable(allPersons,dateSetting) {
     let rows = "";
     allPersons.forEach(person => {
+      //parseamos los datos de cada persona
+      const personParsed=this.#parseDataPerson(person,dateSetting);
       rows += `
-        <tr data-id="${person.id}">
-          <td>${person.name}</td>
-          <td>${person.surname1}</td>
-          <td>${person.surname2}</td>
-          <td>${person.dateBirth}</td>
+        <tr data-id="${personParsed.id}">
+          <td>${personParsed.name}</td>
+          <td>${personParsed.surname1}</td>
+          <td>${personParsed.surname2}</td>
+          <td>${personParsed.dateBirth}</td>
           <td class="table-persons_delPerson"><img src="./assets/icons/trash.svg" alt="eliminar persona"></td>
         </tr>`;
     });

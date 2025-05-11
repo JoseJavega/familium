@@ -7,21 +7,21 @@ const formSection = document.getElementById('sect-form-person');
 const tableSection = document.getElementById('sect-allPersons');
 const treeSection = document.getElementById('sect-tree');
 const personSection = document.getElementById('sect-currentPerson');
-//Botón ytemporal de abrir formulario
+//-----------------------------------------------------------
+// BOTON TEMPORAL PARA ABRIR EL FORMULARIO Y AÑADIR MAS GENTE
+//-----------------------------------------------------------
 const btnOpenForm = document.getElementById('btnOpenForm');
 
-const dbTable = 'persons';
-
 const currentPerson = {
-  gender: "",
+  gender: "male",
   name: "Probando",
   surname1: "Nombre",
   surname2: "Falso",
   dateBirth: null,
-  placeBirth: null,
+  placeBirth: "Nueva Yol",
   dateDeath: null,
-  placeDeath: null,
-  fatherId: null,
+  placeDeath: "Marte",
+  fatherId: 31,
   motherId: null,
   brothersId: [],
 };
@@ -39,17 +39,21 @@ function validateForm() {
 };
 
 function getFormData() {
-  currentPerson.gender= formSection.querySelector('input[name="newPerson-gender"]:checked').value;
-  currentPerson.name = formSection.querySelector('#newPerson-name').value;
-  currentPerson.surname1 = formSection.querySelector('#newPerson-surname1').value;
-  currentPerson.surname2 = formSection.querySelector('#newPerson-surname2').value;
-  currentPerson.dateBirth = new Date(formSection.querySelector('#newPerson-dateBirth').value).toLocaleDateString(settings.appSettings.dateFormat);
-  currentPerson.placeBirth = formSection.querySelector('#newPerson-placeBirth').value;
-  currentPerson.dateDeath = new Date(formSection.querySelector('#newPerson-dateDeath').value).toLocaleDateString(settings.appSettings.dateFormat);
-  currentPerson.placeDeath = formSection.querySelector('#newPerson-placeDeath').value;
+  currentPerson.gender= formSection.querySelector('input[name="newPerson-gender"]:checked').value || null;
+  currentPerson.name = formSection.querySelector('#newPerson-name').value || null;
+  currentPerson.surname1 = formSection.querySelector('#newPerson-surname1').value || null;
+  currentPerson.surname2 = formSection.querySelector('#newPerson-surname2').value || null;
+  currentPerson.placeBirth = formSection.querySelector('#newPerson-placeBirth').value || null;
+  currentPerson.placeDeath = formSection.querySelector('#newPerson-placeDeath').value || null;
+  //las fechas se pasan a formato estandar para almacenarlas
+  currentPerson.dateBirth = formSection.querySelector('#newPerson-dateBirth').value?
+                            new Date(formSection.querySelector('#newPerson-dateBirth').value).toISOString(): null;
+
+  currentPerson.dateDeath = formSection.querySelector('#newPerson-dateDeath').value?
+                            new Date(formSection.querySelector('#newPerson-dateDeath').value).toISOString(): null;
 }
 
-// funcion auxiliar para reutilizar  codigo
+// funcion auxiliar para reutilizar el codigo de crear el personModel
 async function createPersonModel() {
   const db = new Database(settings.dbConfig);
   await db.open();
@@ -58,7 +62,6 @@ async function createPersonModel() {
 }
 
 async function personView(error) {
-  //formSection.innerHTML = "";
   tableSection.innerHTML = "";
   treeSection.innerHTML = "";
   personSection.innerHTML = "";
@@ -71,12 +74,11 @@ async function personView(error) {
   const isDesktop = window.matchMedia("(min-width: 768px)").matches;
 
   if (allPersons.length > 0) {
+    personView.renderCurrentPerson(currentPerson, settings.appSettings.dateFormat);
     if (isDesktop) {
       personView.renderPersonTable(allPersons);
-      personView.renderCurrentPerson(currentPerson);
     } else {
       personView.renderPersonList(allPersons);
-      personView.renderCurrentPerson(currentPerson);
     }
   } else {
     personView.renderInitialForm(error);
@@ -102,7 +104,7 @@ async function handleUpdatePerson() {
     const { model, db } = await createPersonModel();
     if (model.getById(currentPerson.id)) {
       model.update(currentPerson);
-    } else console.log("La persona a actiualizar, aún NO existe");
+    } else console.log("La persona a actualizar, aún NO existe");
     await db.close();
   };
 };
