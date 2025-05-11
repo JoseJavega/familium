@@ -156,7 +156,7 @@ export class PersonView {
       //parseamos los datos de cada persona
       const personParsed=this.#parseDataPerson(person,dateSetting);
       rows += `
-        <tr data-id="${personParsed.id}">
+        <tr data-id="${person.id}">
           <td>${personParsed.name}</td>
           <td>${personParsed.surname1}</td>
           <td>${personParsed.surname2}</td>

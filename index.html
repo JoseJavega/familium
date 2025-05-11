@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -22,8 +22,14 @@
   <main class="main">
     <!-- FORMULARIO ALTA Y EDICION-->
     <dialog class="sect-form-person" id="sect-form-person"></dialog>
+    <!-- MODAL PARA CONFIRMACION DE BORRADOS-->
+    <dialog class="confirmationModal" id="confirmationModal">
+      <p class="confirmationModal-msg" id="confirmationModal-msg"></p>
+      <button type="button" data-action="cancel" id="btnModalCancel">Cancelar</button>
+      <button type="button" data-action="confirm" id="btnModalConfirm">Borrar</button>
+    </dialog>
     <!-- FICHA CURRENT PERSON -->
-    <section class="sect-currentPerson"></section>
+    <section class="sect-currentPerson" id="sect-currentPerson"></section>
     <!-- TABLA/LISTA DE PERSONAS -->
     <section class="sect-allPersons" id="sect-allPersons"></section>
     <!-- ARBOL GENEALOGICO -->
@@ -31,6 +37,8 @@
   </main>
   <footer>
     <p>J.J. Desing 2026</p>
+    <!-- BOTON TEMPORAL PARA ABRIR EL FORMULARIO Y AÑADIR PERSONAS PARA PRUEBAS-->
+    <button type="button" id="btnOpenForm">Abrir formulario</button>
   </footer>
   <script type="module" src="./js/app.js"></script>
   <script type="module" src="./js/controllers/person-controller.js"></script>

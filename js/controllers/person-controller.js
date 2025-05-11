@@ -1,7 +1,8 @@
 import { Database } from "../db/Database.js";
 import { PersonView } from "../views/PersonView.js";
 import { PersonModel} from "../models/PersonModel.js";
-import { settings } from '../../config/config.js'; 
+import { settings } from '../../config/config.js';
+import { showConfirmationModal } from '../views/confirmationModalView.js';
 
 const formSection = document.getElementById('sect-form-person');
 const tableSection = document.getElementById('sect-allPersons');
@@ -123,9 +124,16 @@ async function handleDeletePerson(id) {
     console.log("Ninguna persona seleccionada para eliminar");
     return
   }
-  await model.remove(personId);
-  await db.close();
-  personView();
+
+  const confirmation = await showConfirmationModal('¿Estás seguro de que quieres eliminar esta persona?');
+  if (confirmation) {
+    await model.remove(personId);
+    await db.close();
+    personView();
+    console.log(`Persona con id ${id} eliminada`);
+  } else {
+    console.log('Eliminación cancelada');
+  }
 };
 
 async function handleDeleteAllPerson() {
@@ -147,7 +155,7 @@ function handleFormEvent(e) {
 }
 
 async function handleAllpersonsEvent(e) {
-  let selectedPersonId = Number(e.target.closest('[data-id]')?.dataset.id);
+  const selectedPersonId = Number(e.target.closest('[data-id]')?.dataset.id);
   if (selectedPersonId) {
     if (e.target.tagName === "IMG") {
       handleDeletePerson(selectedPersonId);
