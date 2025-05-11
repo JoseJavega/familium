@@ -1,6 +1,7 @@
 # Familium
 
-**Familium** es una aplicación de genealogía personal desarrollada en JavaScript puro. Permite registrar, visualizar y gestionar árboles genealógicos, con almacenamiento local a través de IndexedDB y una interfaz orientada a la claridad y facilidad de uso.
+**Familium** es una aplicación de genealogía personal desarrollada en vanilla JavaScript.<br>
+Permite registrar, visualizar y gestionar árboles genealógicos, con almacenamiento local a través de IndexedDB y una interfaz orientada a la claridad y facilidad de uso.
 
 ## Funcionalidades principales
 - Añadir, editar y eliminar personas
@@ -11,10 +12,10 @@
 - Configuración de idioma, tema y formato de fecha
 
 ## Tecnologías utilizadas
-- JavaScript 
-- HTML y CSS puro
+- vanilla JavaScript 
+- CSS responsive con mediaqueries FLEX y GRID
 - IndexedDB para almacenamiento
-- Estructura modular basada en controladores y vistas
+- Estructura MVC
 
 ## Estructura del proyecto
 
@@ -26,15 +27,15 @@
 │ ├── controllers/ <br> 
 │ ├── models/ <br>
 │ └── views/ <br>
+│ └── app.js # Entrada principal JavaScript <br>
 ├── config/ <br>
 │ └── config.js <br>
-├── app.js # Entrada principal JavaScript <br>
 └── index.html <br>
 
 ## Configuración inicial
 Los ajustes generales se encuentran en `src/config/config.js`, incluyendo:
 
-- Parámetros de conexión para IndexedDB
+- Parámetros de conexión para IndexedDB, que pueden adaptarse para su futura conexión a otro medelo de BBDD
 - Opciones de visualización (tema, idioma, disposición del árbol, etc)
 
 Una vez iniciada la aplicacion y creados los storages necesarios, la configuración de visualización permanece en indexedDB para poder modificarla según elecciones del usuario
