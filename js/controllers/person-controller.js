@@ -125,7 +125,7 @@ async function handleDeletePerson(id) {
     return
   }
 
-  const confirmation = await showConfirmationModal('¿Estás seguro de que quieres eliminar esta persona?');
+  const confirmation = await showConfirmationModal('¿Estás seguro de que quieres eliminar esta persona?','delete');
   if (confirmation) {
     await model.remove(personId);
     await db.close();

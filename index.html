@@ -24,9 +24,11 @@
     <dialog class="sect-form-person" id="sect-form-person"></dialog>
     <!-- MODAL PARA CONFIRMACION DE BORRADOS-->
     <dialog class="confirmationModal" id="confirmationModal">
-      <p class="confirmationModal-msg" id="confirmationModal-msg"></p>
-      <button type="button" data-action="cancel" id="btnModalCancel">Cancelar</button>
-      <button type="button" data-action="confirm" id="btnModalConfirm">Borrar</button>
+      <p id="confirmationModal-msg"></p>
+      <div class="buttons-centered">
+        <button class="btn" type="button" data-action="cancel" id="btnModalCancel">Cancelar</button>
+        <button class="btn" type="button" data-action="confirm" id="btnModalConfirm">Confirmar</button>
+      </div>
     </dialog>
     <!-- FICHA CURRENT PERSON -->
     <section class="sect-currentPerson" id="sect-currentPerson"></section>

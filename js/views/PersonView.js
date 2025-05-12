@@ -105,8 +105,8 @@ export class PersonView {
           </div>
           <p class="form-error-txt ${noDisplayErrorClass}">${errorTxt}</p>
           <div class="form-actions">
-            <button class="btn warning newPerson-btn" id="newPerson-btn-reset" type="reset">Limpiar</button>
-            <button class="btn primary newPerson-btn" id="newPerson-btn-save" type="submit">Guardar</button>
+            <button class="btn warning" id="newPerson-btn-reset" type="reset">Limpiar</button>
+            <button class="btn primary" id="newPerson-btn-save" type="submit">Guardar</button>
           </div>
         </form>
       </div>
