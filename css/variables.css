@@ -11,6 +11,7 @@
   --bg-color-alt: #FFFFFF; /* Fondo alternativo (tarjetas, secciones) */
 
   --gray-color: #D6D3D1;/* Tonos grises sutiles para bordes o elementos secundarios */
+  --gray-color-dark: #999999;/* Tonos grises oscuros */
   --blue-color: #457B9D;/* Color principal (acentos, botones primarios, enlaces destacados) */
   --green-color: #4CAF50; /* Verde (para confirmaciones, elementos positivos) */
   --red-color: #E63946; /* Rojo (para alertas o acciones destructivas) */
@@ -18,7 +19,8 @@
   --yellow-color: #FFD166; /* Amarillo suave (opcional, para resaltes o badges) */
   --purple-color: #6A4C93; /* Morado refinado (acento alternativo) */
   --white-color: #FAFAFA;/* Blanco sutil para textos o fondos destacados */
-  --text-color-main: #131313; /* pincipal del texto */
+  --text-color-dark: #131313; /* texto oscuro */
+  --text-color-light: #f4f1ee; /* texto claro */
   
   --font-family-tittle: 'Cinzel', 'serif';
   --font-family-main: "Poppins", sans-serif; /* Tipografía principal */

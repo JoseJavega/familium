@@ -384,3 +384,19 @@ template {
 [hidden] {
     display: none;
 }
+
+/** CENTRADO DE LA VENTANA MODAL - DIALOG **/
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  max-width: 90vw;
+  max-height: 80vh;
+  overflow: auto;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
