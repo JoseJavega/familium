@@ -13,7 +13,7 @@ const personSection = document.getElementById('sect-currentPerson');
 //-----------------------------------------------------------
 const btnOpenForm = document.getElementById('btnOpenForm');
 
-const currentPerson = {
+let currentPerson = {
   gender: "male",
   name: "Probando",
   surname1: "Nombre",
@@ -87,16 +87,13 @@ async function personView(error) {
 };
 
 async function handleAddPerson() {
-  let error = "";
   if (validateForm()) {
     getFormData();
     const { model, db } = await createPersonModel();
-    await model.add(currentPerson);
+    const addConfirm=await model.add(currentPerson);
     await db.close();
-  } else {
-    error = "Error al insertar persona, al menos un campo debe contener datos";
+    return addConfirm;
   }
-  personView(error);
 }
 
 async function handleUpdatePerson() {
@@ -112,9 +109,9 @@ async function handleUpdatePerson() {
 
 async function handleGetPersonById(id) {
   const { model, db } = await createPersonModel();
-  const persona = await model.getById(id);
-  console.log(persona);
+  const person = await model.getById(id);
   await db.close();
+  return person;
 }
 
 async function handleDeletePerson(id) {
@@ -145,8 +142,9 @@ async function handleDeleteAllPerson() {
 function handleFormEvent(e) {
   if (e.target.id === 'newPerson-btn-save') {
     e.preventDefault();
-    handleAddPerson()
+    const addConfirm= handleAddPerson()
     formSection.close();
+    if (addConfirm) personView();
   } else if (e.target.id === 'form-close-icon') {
     formSection.close();
     personView();
@@ -160,7 +158,8 @@ async function handleAllpersonsEvent(e) {
     if (e.target.tagName === "IMG") {
       handleDeletePerson(selectedPersonId);
     } else {
-      handleGetPersonById(selectedPersonId)
+      currentPerson= await handleGetPersonById(selectedPersonId)
+      personView();
     }
   }
 }
