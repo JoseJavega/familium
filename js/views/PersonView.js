@@ -84,6 +84,12 @@ export class PersonView {
             </div>
           </div>
           <div class="form-row">
+            <div class="form-group-horizontal">
+              <input type="checkbox" name="newPerson-isDeath" id="newPerson-isDeath"/>
+              <label class="newPerson-lbl" for="newPerson-isDeath">Fallecido</label> 
+            </div>
+          </div>
+          <div class="form-row inactiveFieldForm" id="newPerson-deathFields">      
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-dateDeath">Fecha de defunción</label>
               <input class="newPerson-input" id="newPerson-dateDeath" type="date">
@@ -104,7 +110,7 @@ export class PersonView {
             </div>
           </div>
           <p class="form-error-txt ${noDisplayErrorClass}">${errorTxt}</p>
-          <div class="form-actions">
+          <div class="buttons-centered">
             <button class="btn warning" id="newPerson-btn-reset" type="reset">Limpiar</button>
             <button class="btn primary" id="newPerson-btn-save" type="submit">Guardar</button>
           </div>
@@ -133,6 +139,14 @@ export class PersonView {
         break;
     };
 
+  // construyo si ha fallecido
+    const deathInfoHTML = currentPerson.isDeath
+    ? `
+      <p>Fecha de Defunción: ${parsedPerson.dateDeath}</p>
+      <p>Lugar de Defunción: ${parsedPerson.placeDeath}</p>`
+    : '';
+    
+    // montamos el HTML
     personContainer.innerHTML = `
       <div class="currentPerson-header">
         <img class="personHeader-gender-icon" src=${genderIcon} alt="genero"> 
@@ -141,8 +155,7 @@ export class PersonView {
       </div>
       <p>Fecha de Nacimiento: ${parsedPerson.dateBirth}</p>
       <p>Lugar de Nacimiento: ${parsedPerson.placeBirth}</p>
-      <p>Fecha de Defunción: ${parsedPerson.dateDeath}</p>
-      <p>Lugar de Defunción: ${parsedPerson.placeDeath}</p>
+      ${deathInfoHTML}
       <p>Nombre del padre: ${parsedPerson.fatherId}</p>
       <p>Nombre de la madre: ${parsedPerson.motherId}</p>
       `;
