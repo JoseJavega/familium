@@ -1,17 +1,17 @@
 export class PersonView {
 
-  #parseDataPerson(person,dateSetting){
+  #parseDataPerson(person, dateSetting) {
     // funcion para parsear los datos tipo texto
     // el parámetro fallback de la función flecha define un valor por defecto para ese parámetro
     const formatValue = (value, fallback = 'Desconocido') =>
-    value === null || value === '' ? `<span class="unknown">${fallback}</span>` : value;
+      value === null || value === '' ? `<span class="unknown">${fallback}</span>` : value;
 
     // funcion para revisar si hay fecha válida y parsearla al formato local recibido
     const formatDate = (date) => {
       const parsedDate = new Date(date);
       if (!date || isNaN(parsedDate.getTime())) {
-      return `<span class="unknown">Desconocida</span>`;
-      }else return parsedDate.toLocaleDateString(dateSetting);
+        return `<span class="unknown">Desconocida</span>`;
+      } else return parsedDate.toLocaleDateString(dateSetting);
     };
 
     //devolvemos todos los valores de currentPerson parseados por la funciones anteriores
@@ -30,7 +30,8 @@ export class PersonView {
   }
 
   // Formulario inicial para añadir persona y adaptable para editar a currentPerson
-  renderInitialForm(error) {
+  renderInitialForm({ error = null, person = null } = {}) {
+    let editPerson = {};
     const formContainer = document.getElementById('sect-form-person');
     formContainer.innerHTML = "";
     let errorTxt = "";
@@ -40,11 +41,24 @@ export class PersonView {
       noDisplayErrorClass = "";
     }
 
+    // si pasamos currentPerson igualamos campos y si no se pone todo el blanco
+    editPerson.id = person?.id || '';
+    editPerson.gender = person?.gender || '';
+    editPerson.name = person?.name || '';
+    editPerson.surname1 = person?.surname1 || '';
+    editPerson.surname2 = person?.surname2 || '';
+    editPerson.isDeath = person?.isDeath || false;
+    editPerson.dateBirth = person?.dateBirth ? person.dateBirth.split('T')[0] : '';
+    editPerson.placeBirth = person?.placeBirth || '';
+    editPerson.dateDeath = person?.dateDeath ? person.dateDeath.split('T')[0] : '';
+    editPerson.placeDeath = person?.placeDeath || '';
+
+
     formContainer.innerHTML = `
       <div class="container">
         <img id="form-close-icon" src="./assets/icons/close-circle.svg" alt="cerrar ventana">
         <h2>Alta de nueva persona</h2>
-        <form id="newPerson" method="modal">
+        <form id="newPerson" method="modal" data-person-id="${editPerson.id}">
           <div class="form-row">
             <div class="form-group-horizontal">
               <input type="radio" name="newPerson-gender" id="newPerson-gender-male" value="male" tabindex="10"/> 
@@ -61,26 +75,26 @@ export class PersonView {
           </div>
           <div class="form-row">
             <div class="form-group-vertical">
-              <label class="newPerson-lbl" for="newPerson-name">Nombre</label>
-              <input class="newPerson-input" id="newPerson-name" type="text" autofocus>
+              <label class="newPerson-lbl" for="newPerson-name" >Nombre</label>
+              <input class="newPerson-input" id="newPerson-name" type="text" autofocus value="${editPerson.name}">
             </div>
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-surname1">Primer apellido</label>
-              <input class="newPerson-input" id="newPerson-surname1" type="text">
+              <input class="newPerson-input" id="newPerson-surname1" type="text" value="${editPerson.surname1}">
             </div>
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-surname2">Segundo apellido</label>
-              <input class="newPerson-input" id="newPerson-surname2" type="text">
+              <input class="newPerson-input" id="newPerson-surname2" type="text" value="${editPerson.surname2}">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-dateBirth">Fecha de nacimiento</label>
-              <input class="newPerson-input" id="newPerson-dateBirth" type="date">
+              <input class="newPerson-input" id="newPerson-dateBirth" type="date" value="${editPerson.dateBirth}">
             </div>
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-placeBirth">Lugar de nacimiento</label>
-              <input class="newPerson-input" id="newPerson-placeBirth" type="text">
+              <input class="newPerson-input" id="newPerson-placeBirth" type="text" value="${editPerson.placeBirth}">
             </div>
           </div>
           <div class="form-row">
@@ -92,21 +106,11 @@ export class PersonView {
           <div class="form-row inactiveFieldForm" id="newPerson-deathFields">      
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-dateDeath">Fecha de defunción</label>
-              <input class="newPerson-input" id="newPerson-dateDeath" type="date">
+              <input class="newPerson-input" id="newPerson-dateDeath" type="date" value="${editPerson.dateDeath}">
             </div>
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-placeDeath">Lugar de defunción</label>
-              <input class="newPerson-input" id="newPerson-placeDeath" type="text">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group-vertical">
-              <label class="newPerson-lbl" for="newPerson-fatherName">Nombre del padre</label>
-              <input class="newPerson-input" id="newPerson-fatherName" type="txt">
-            </div>
-            <div class="form-group-vertical">
-              <label class="newPerson-lbl" for="newPerson-motherName">Nombre de la madre</label>
-              <input class="newPerson-input" id="newPerson-motherName" type="text">
+              <input class="newPerson-input" id="newPerson-placeDeath" type="text" value="${editPerson.placeDeath}">
             </div>
           </div>
           <p class="form-error-txt ${noDisplayErrorClass}">${errorTxt}</p>
@@ -117,6 +121,7 @@ export class PersonView {
         </form>
       </div>
     `
+
     formContainer.showModal();
   }
 
@@ -124,7 +129,7 @@ export class PersonView {
   renderCurrentPerson(currentPerson, dateSetting) {
     const personContainer = document.getElementById("sect-currentPerson");
     //parsemos los datos de currentPerson a modo "vista"
-    const parsedPerson= this.#parseDataPerson(currentPerson,dateSetting);  
+    const parsedPerson = this.#parseDataPerson(currentPerson, dateSetting);
 
     let genderIcon = "";
     switch (parsedPerson.gender) {
@@ -139,19 +144,19 @@ export class PersonView {
         break;
     };
 
-  // construyo si ha fallecido
+    // construyo si ha fallecido
     const deathInfoHTML = currentPerson.isDeath
-    ? `
+      ? `
       <p>Fecha de Defunción: ${parsedPerson.dateDeath}</p>
       <p>Lugar de Defunción: ${parsedPerson.placeDeath}</p>`
-    : '';
-    
+      : '';
+
     // montamos el HTML
     personContainer.innerHTML = `
       <div class="currentPerson-header">
         <img class="personHeader-gender-icon" src=${genderIcon} alt="genero"> 
         <h2>${parsedPerson.name} ${parsedPerson.surname1} ${parsedPerson.surname2}</h2>
-        <button><img class="personHeader-edit-icon" src="./assets/icons/edit.svg" alt="editar persona"></button>    
+        <button><img id="currentPerson-edit" class="personHeader-edit-icon" src="./assets/icons/edit.svg" alt="editar persona"></button>    
       </div>
       <p>Fecha de Nacimiento: ${parsedPerson.dateBirth}</p>
       <p>Lugar de Nacimiento: ${parsedPerson.placeBirth}</p>
@@ -163,11 +168,11 @@ export class PersonView {
   }
 
   // Tabla de todas las personas, para formato escritorio
-  renderPersonTable(allPersons,dateSetting) {
+  renderPersonTable(allPersons, dateSetting) {
     let rows = "";
     allPersons.forEach(person => {
       //parseamos los datos de cada persona
-      const personParsed=this.#parseDataPerson(person,dateSetting);
+      const personParsed = this.#parseDataPerson(person, dateSetting);
       rows += `
         <tr data-id="${person.id}">
           <td>${personParsed.name}</td>
