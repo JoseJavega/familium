@@ -14,6 +14,7 @@ const personSection = document.getElementById('sect-currentPerson');
 const btnOpenForm = document.getElementById('btnOpenForm');
 
 let currentPerson = {
+  id: 13,
   gender: "male",
   name: "Probando",
   surname1: "Nombre",
@@ -25,7 +26,6 @@ let currentPerson = {
   placeDeath: "Marte",
   fatherId: 31,
   motherId: null,
-  brothersId: [],
 };
 
 function validateForm() {
@@ -40,7 +40,9 @@ function validateForm() {
   return isValid;
 };
 
+
 function getFormData() {
+  currentPerson.id= parseInt(formSection.querySelector('#newPerson').dataset.personId);
   currentPerson.gender = formSection.querySelector('input[name="newPerson-gender"]:checked').value || null;
   currentPerson.name = formSection.querySelector('#newPerson-name').value || null;
   currentPerson.surname1 = formSection.querySelector('#newPerson-surname1').value || null;
@@ -64,6 +66,7 @@ async function createPersonModel() {
   return { model, db };
 }
 
+// pintado de la ventana de persona
 async function personView(error) {
   tableSection.innerHTML = "";
   treeSection.innerHTML = "";
@@ -84,32 +87,36 @@ async function personView(error) {
       personView.renderPersonList(allPersons);
     }
   } else {
-    personView.renderInitialForm(error);
+    personView.renderInitialForm({ error: error });
   }
 };
 
-// manejador de añadir persona
-async function handleAddPerson() {
-  if (validateForm()) {
-    getFormData();
-    const { model, db } = await createPersonModel();
-    const addConfirm = await model.add(currentPerson);
-    await db.close();
-    return addConfirm;
+// manejador para añadir o editar personas según haya o no personId
+async function handleSavePerson(){
+  //si el formulario no es valido salimos
+  if (!validateForm()) return false;
+
+  //leemos datos, creamos el modelo e inicializamos el retorno en false por defecto
+  getFormData();
+  console.log(currentPerson);
+  const { model, db } = await createPersonModel();
+  let saveResult=false;
+
+  if (currentPerson.id){
+    const existe = await model.getById(currentPerson.id);
+    if (existe){
+      saveResult = await model.update(currentPerson);
+    }else{
+      console.warn("La persona a actualiza NO existe en BBDD");
+    }
+  }else{
+    if('id' in currentPerson) delete currentPerson.id;
+    saveResult = await model.add(currentPerson);
   }
+
+  db.close;
+  return saveResult;
 }
-
-// manejador de actualizar persona 
-async function handleUpdatePerson() {
-  if (validateForm()) {
-    getFormData();
-    const { model, db } = await createPersonModel();
-    if (model.getById(currentPerson.id)) {
-      model.update(currentPerson);
-    } else console.log("La persona a actualizar, aún NO existe");
-    await db.close();
-  };
-};
 
 // manejador de leer persona por ID
 async function handleGetPersonById(id) {
@@ -147,7 +154,7 @@ async function handleDeleteAllPerson() {
 };
 
 // activa/desactiva fecha y lugar de defuncion en el formulario
-function toggleFormDeathFields(){
+function toggleFormDeathFields() {
   const deathCheckbox = document.getElementById('newPerson-isDeath');
   const deathFields = document.getElementById('newPerson-deathFields');
 
@@ -168,13 +175,13 @@ function handleFormEvent(e) {
       break;
     case 'newPerson-btn-save':
       e.preventDefault();
-      const addConfirm = handleAddPerson()
+      const saveConfirm = handleSavePerson();
       formSection.close();
-      if (addConfirm) personView();
+      if (saveConfirm) personView();
       break;
     case 'form-close-icon':
       formSection.close();
-      personView(); 
+      personView();
     default:
       break;
   }
@@ -187,15 +194,25 @@ async function handleAllpersonsEvent(e) {
     if (e.target.tagName === "IMG") {
       handleDeletePerson(selectedPersonId);
     } else {
-      currentPerson = await handleGetPersonById(selectedPersonId)
+      currentPerson = await handleGetPersonById(selectedPersonId);
+      currentPerson.id = selectedPersonId;
       personView();
     }
+  }
+}
+
+// manejador de eventos de la ficha de currentPerson
+function handleCurrentPersonEvent(e) {
+  if (e.target.id === "currentPerson-edit") {
+    const newPerson = new PersonView();
+    newPerson.renderInitialForm({ person: currentPerson });
   }
 }
 
 // LISTENERS 
 formSection.addEventListener('click', handleFormEvent);
 tableSection.addEventListener('click', handleAllpersonsEvent);
+personSection.addEventListener('click', handleCurrentPersonEvent);
 
 // temporal para boton Open form
 btnOpenForm.addEventListener('click', () => {
