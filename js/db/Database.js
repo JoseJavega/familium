@@ -140,7 +140,7 @@ export class Database {
       this.#withConnection(() => {
         const tx = this.db.transaction(table, "readwrite");
         const store = tx.objectStore(table);
-        const request = store.update(data);
+        const request = store.put(data);
 
         request.onsuccess = (e) => {
           resolve(e.target.result); // Devolvemos los datos cuando la consulta sea exitosa
