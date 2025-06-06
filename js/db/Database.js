@@ -89,13 +89,15 @@ export class Database {
 
   // METODOS
   add(table, data) {
-    this.#withConnection(() => {
-      const tx = this.db.transaction(table, "readwrite");
-      const store = tx.objectStore(table);
-      const request = store.add(data);
+    return new Promise((resolve, reject) => {
+      this.#withConnection(() => {
+        const tx = this.db.transaction(table, "readwrite");
+        const store = tx.objectStore(table);
+        const request = store.add(data);
 
-      request.onsuccess = () => console.log("Elemento añadido.");
-      request.onerror = (e) => console.error("Error al añadir - ", e.target.error);
+        request.onsuccess = () => resolve(request.result); // Devuelve el ID asignado
+        request.onerror = (e) => reject(e.target.error);
+      });
     });
   };
 
@@ -106,13 +108,8 @@ export class Database {
         const store = tx.objectStore(table);
         const request = store.getAll();
 
-        request.onsuccess = (e) => {
-          resolve(e.target.result); // Devolvemos los datos cuando la consulta sea exitosa
-        };
-        request.onerror = (e) => {
-          console.error("Error al obtener los datos - ", e.target.error);
-          reject(e.target.error); // Rechazamos la promesa si ocurre un error
-        };
+        request.onsuccess = () => resolve(request.result); // Devolvemos los datos cuando la consulta sea exitosa
+        request.onerror = (e) => reject(e.target.error); // Rechazamos la promesa si ocurre un error
       });
     });
   };
