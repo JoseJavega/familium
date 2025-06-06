@@ -42,7 +42,7 @@ function validateForm() {
 
 
 function getFormData() {
-  currentPerson.id= parseInt(formSection.querySelector('#newPerson').dataset.personId);
+  currentPerson.id = parseInt(formSection.querySelector('#newPerson').dataset.personId);
   currentPerson.gender = formSection.querySelector('input[name="newPerson-gender"]:checked').value || null;
   currentPerson.name = formSection.querySelector('#newPerson-name').value || null;
   currentPerson.surname1 = formSection.querySelector('#newPerson-surname1').value || null;
@@ -92,29 +92,29 @@ async function personView(error) {
 };
 
 // manejador para añadir o editar personas según haya o no personId
-async function handleSavePerson(){
+async function handleSavePerson() {
   //si el formulario no es valido salimos
   if (!validateForm()) return false;
 
   //leemos datos, creamos el modelo e inicializamos el retorno en false por defecto
   getFormData();
-  console.log(currentPerson);
   const { model, db } = await createPersonModel();
-  let saveResult=false;
+  let saveResult = false;
 
-  if (currentPerson.id){
+  if (currentPerson.id) {
     const existe = await model.getById(currentPerson.id);
-    if (existe){
+    if (existe) {
       saveResult = await model.update(currentPerson);
-    }else{
+    } else {
       console.warn("La persona a actualiza NO existe en BBDD");
     }
-  }else{
-    if('id' in currentPerson) delete currentPerson.id;
+  } else {
+    delete currentPerson.id;
     saveResult = await model.add(currentPerson);
+    currentPerson.id=saveResult;
   }
 
-  db.close;
+  db.close();
   return saveResult;
 }
 
@@ -168,20 +168,21 @@ function toggleFormDeathFields() {
 }
 
 // manejador de eventos del formulario
-function handleFormEvent(e) {
+async function handleFormEvent(e) {
   switch (e.target.id) {
     case 'newPerson-isDeath':
       toggleFormDeathFields();
       break;
     case 'newPerson-btn-save':
       e.preventDefault();
-      const saveConfirm = handleSavePerson();
+      const saveConfirm = await handleSavePerson();
       formSection.close();
       if (saveConfirm) personView();
       break;
     case 'form-close-icon':
       formSection.close();
       personView();
+      break;
     default:
       break;
   }
