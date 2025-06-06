@@ -52,7 +52,28 @@ export class PersonView {
     editPerson.placeBirth = person?.placeBirth || '';
     editPerson.dateDeath = person?.dateDeath ? person.dateDeath.split('T')[0] : '';
     editPerson.placeDeath = person?.placeDeath || '';
-
+    //seteamos el genero
+    let genderMaleChecked="";
+    let genderFemaleChecked="";
+    let genderDesconocidoChecked="";    
+    switch (editPerson.gender) {
+      case "male":
+        genderMaleChecked="checked";
+        break;
+      case "female":
+        genderFemaleChecked="checked";
+        break;
+      default:
+        genderDesconocidoChecked="checked";
+        break;
+    };
+    //seteamos isDeath
+    let classCSSInactiveFieldForm="inactiveFieldForm";
+    let isDeathChecked="";
+    if (editPerson.isDeath){
+      isDeathChecked="checked";
+      classCSSInactiveFieldForm="";
+    }
 
     formContainer.innerHTML = `
       <div class="container">
@@ -61,15 +82,15 @@ export class PersonView {
         <form id="newPerson" method="modal" data-person-id="${editPerson.id}">
           <div class="form-row">
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-gender" id="newPerson-gender-male" value="male" tabindex="10"/> 
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-male" value="male" ${genderMaleChecked} tabindex="10"/> 
               <label class="newPerson-lbl" for="newPerson-gender-male">Hombre</label>               
             </div>
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-gender" id="newPerson-gender-female" value="female" tabindex="10"/>
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-female" value="female" ${genderFemaleChecked} tabindex="10"/>
               <label class="newPerson-lbl" for="newPerson-gender-female">Mujer</label>               
             </div>
             <div class="form-group-horizontal">
-              <input type="radio" name="newPerson-gender" id="newPerson-gender-unknown" value="Desconocido" checked tabindex="10"/>
+              <input type="radio" name="newPerson-gender" id="newPerson-gender-unknown" value="Desconocido" ${genderDesconocidoChecked} tabindex="10"/>
               <label class="newPerson-lbl" for="newPerson-gender-unknown">Desconocido</label> 
             </div>
           </div>
@@ -99,11 +120,11 @@ export class PersonView {
           </div>
           <div class="form-row">
             <div class="form-group-horizontal">
-              <input type="checkbox" name="newPerson-isDeath" id="newPerson-isDeath"/>
+              <input type="checkbox" name="newPerson-isDeath" id="newPerson-isDeath" ${isDeathChecked}/>
               <label class="newPerson-lbl" for="newPerson-isDeath">Fallecido</label> 
             </div>
           </div>
-          <div class="form-row inactiveFieldForm" id="newPerson-deathFields">      
+          <div class="form-row ${classCSSInactiveFieldForm}" id="newPerson-deathFields">      
             <div class="form-group-vertical">
               <label class="newPerson-lbl" for="newPerson-dateDeath">Fecha de defunción</label>
               <input class="newPerson-input" id="newPerson-dateDeath" type="date" value="${editPerson.dateDeath}">
@@ -227,9 +248,9 @@ export class PersonView {
     const treeSection = document.getElementById('sect-tree');
 
     treeSection.innerHTML = `<div class="treeDesing">
-    <p class="g2-1">Pablo</p>
-    <p class="g1">Jose</p>
-    <p class="g2-2">Carmen</p>  
+    <p class="g2-1">Padre</p>
+    <p class="g1">Persona</p>
+    <p class="g2-2">Madre</p>  
     </div>`;
   }
 }
