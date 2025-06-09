@@ -172,6 +172,17 @@ export class PersonView {
       <p>Lugar de Defunción: ${parsedPerson.placeDeath}</p>`
       : '';
 
+    // construyo el apartado de padre y madre
+    let fatherHtml=`<p><button class="" type="button" id="btnAddFather">+ Añadir Padre</button></p>`;
+    let motherHtml=`<p><button class="" type="button" id="btnAddMather">+ Añadir Madre</button></p>`;
+    if (!isNaN(parsedPerson.fatherId)){
+      fatherHtml=`<p>Nombre del padre: ${parsedPerson.fatherId}</p>`
+    };
+    if (!isNaN(parsedPerson.motherId)){
+      motherHtml=`<p>Nombre de la madre: ${parsedPerson.motherId}</p>`
+    };
+
+
     // montamos el HTML
     personContainer.innerHTML = `
       <div class="currentPerson-header">
@@ -182,8 +193,8 @@ export class PersonView {
       <p>Fecha de Nacimiento: ${parsedPerson.dateBirth}</p>
       <p>Lugar de Nacimiento: ${parsedPerson.placeBirth}</p>
       ${deathInfoHTML}
-      <p>Nombre del padre: ${parsedPerson.fatherId}</p>
-      <p>Nombre de la madre: ${parsedPerson.motherId}</p>
+      ${fatherHtml}
+      ${motherHtml}
       `;
 
   }
