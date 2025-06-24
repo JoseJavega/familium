@@ -3,15 +3,20 @@ import { PersonView } from "../views/PersonView.js";
 import { PersonModel } from "../models/PersonModel.js";
 import { settings } from '../../config/config.js';
 import { showConfirmationModal } from '../views/confirmationModalView.js';
+import { showSelectPersonModal } from "../views/selectPersonModalView.js";
 
 const formSection = document.getElementById('sect-form-person');
 const tableSection = document.getElementById('sect-allPersons');
 const treeSection = document.getElementById('sect-tree');
 const personSection = document.getElementById('sect-currentPerson');
+
+
 //-----------------------------------------------------------
 // BOTON TEMPORAL PARA ABRIR EL FORMULARIO Y AÑADIR MAS GENTE
-//-----------------------------------------------------------
 const btnOpenForm = document.getElementById('btnOpenForm');
+
+//-----------------------------------------------------------
+
 
 let currentPerson = {
   id: 13,
@@ -72,9 +77,8 @@ async function personView(error) {
   treeSection.innerHTML = "";
   personSection.innerHTML = "";
 
-  const { model, db } = await createPersonModel();
-  const allPersons = await model.getAll();
-  await db.close();
+
+  const allPersons = await handleGetAllPerson();
 
   const personView = new PersonView();
   const isDesktop = window.matchMedia("(min-width: 768px)").matches;
@@ -111,12 +115,12 @@ async function handleSavePerson() {
   } else {
     delete currentPerson.id;
     saveResult = await model.add(currentPerson);
-    currentPerson.id=saveResult;
+    currentPerson.id = saveResult;
   }
 
   db.close();
   return saveResult;
-}
+};
 
 // manejador de leer persona por ID
 async function handleGetPersonById(id) {
@@ -124,7 +128,15 @@ async function handleGetPersonById(id) {
   const person = await model.getById(id);
   await db.close();
   return person;
-}
+};
+
+//manejador de leer todas las personas
+async function handleGetAllPerson() {
+  const { model, db } = await createPersonModel();
+  const personsList = await model.getAll();
+  await db.close();
+  return personsList;
+};
 
 // manejador de eliminar persona por Id
 async function handleDeletePerson(id) {
@@ -215,10 +227,15 @@ formSection.addEventListener('click', handleFormEvent);
 tableSection.addEventListener('click', handleAllpersonsEvent);
 personSection.addEventListener('click', handleCurrentPersonEvent);
 
+
+//-----------------------------------------------------------
 // temporal para boton Open form
 btnOpenForm.addEventListener('click', () => {
   const newPerson = new PersonView();
   newPerson.renderInitialForm();
 });
+
+
+//-----------------------------------------------------------
 
 personView();
