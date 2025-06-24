@@ -20,16 +20,15 @@ Permite registrar, visualizar y gestionar árboles genealógicos, con almacenami
 ## Estructura del proyecto
 
 /src <br>
-├── css/ <br>
 ├── assets/ <br>
-├── js/ <br>
-│ ├── db/ <br> 
-│ ├── controllers/ <br> 
-│ ├── models/ <br>
-│ └── views/ <br>
-│ └── app.js # Entrada principal JavaScript <br>
 ├── config/ <br>
 │ └── config.js <br>
+├── css/ <br>
+├── js/ <br>
+│ ├── controllers/ <br> 
+│ ├── db/ <br> 
+│ ├── models/ <br>
+│ └── views/ <br>
 └── index.html <br>
 
 ## Configuración inicial
