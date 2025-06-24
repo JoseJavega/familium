@@ -14,8 +14,7 @@ const personSection = document.getElementById('sect-currentPerson');
 //-----------------------------------------------------------
 // BOTON TEMPORAL PARA ABRIR EL FORMULARIO Y AÑADIR MAS GENTE
 const btnOpenForm = document.getElementById('btnOpenForm');
-// BOTON TEMPORAL PARA ABRIR EL modal de seleccionar gente
-const btnOpenModal = document.getElementById('btnOpenModal');
+
 //-----------------------------------------------------------
 
 
@@ -235,11 +234,7 @@ btnOpenForm.addEventListener('click', () => {
   const newPerson = new PersonView();
   newPerson.renderInitialForm();
 });
-// temporal para boton Open modal de seleccionar persona
-btnOpenModal.addEventListener('click', async () => {
-  const personList = await handleGetAllPerson();
-  showSelectPersonModal(personList);
-});
+
 
 //-----------------------------------------------------------
 
