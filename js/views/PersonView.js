@@ -53,26 +53,26 @@ export class PersonView {
     editPerson.dateDeath = person?.dateDeath ? person.dateDeath.split('T')[0] : '';
     editPerson.placeDeath = person?.placeDeath || '';
     //seteamos el genero
-    let genderMaleChecked="";
-    let genderFemaleChecked="";
-    let genderDesconocidoChecked="";    
+    let genderMaleChecked = "";
+    let genderFemaleChecked = "";
+    let genderDesconocidoChecked = "";
     switch (editPerson.gender) {
       case "male":
-        genderMaleChecked="checked";
+        genderMaleChecked = "checked";
         break;
       case "female":
-        genderFemaleChecked="checked";
+        genderFemaleChecked = "checked";
         break;
       default:
-        genderDesconocidoChecked="checked";
+        genderDesconocidoChecked = "checked";
         break;
     };
     //seteamos isDeath
-    let classCSSInactiveFieldForm="inactiveFieldForm";
-    let isDeathChecked="";
-    if (editPerson.isDeath){
-      isDeathChecked="checked";
-      classCSSInactiveFieldForm="";
+    let classCSSInactiveFieldForm = "inactiveFieldForm";
+    let isDeathChecked = "";
+    if (editPerson.isDeath) {
+      isDeathChecked = "checked";
+      classCSSInactiveFieldForm = "";
     }
 
     formContainer.innerHTML = `
@@ -173,13 +173,13 @@ export class PersonView {
       : '';
 
     // construyo el apartado de padre y madre
-    let fatherHtml=`<p><button class="" type="button" id="btnAddFather">+ Añadir Padre</button></p>`;
-    let motherHtml=`<p><button class="" type="button" id="btnAddMather">+ Añadir Madre</button></p>`;
-    if (!isNaN(parsedPerson.fatherId)){
-      fatherHtml=`<p>Nombre del padre: ${parsedPerson.fatherId}</p>`
+    let fatherHtml = `<p><button class="" type="button" id="btnAddFather">+ Añadir Padre</button></p>`;
+    let motherHtml = `<p><button class="" type="button" id="btnAddMather">+ Añadir Madre</button></p>`;
+    if (!isNaN(parsedPerson.fatherId)) {
+      fatherHtml = `<p>Nombre del padre: ${parsedPerson.fatherId}</p>`
     };
-    if (!isNaN(parsedPerson.motherId)){
-      motherHtml=`<p>Nombre de la madre: ${parsedPerson.motherId}</p>`
+    if (!isNaN(parsedPerson.motherId)) {
+      motherHtml = `<p>Nombre de la madre: ${parsedPerson.motherId}</p>`
     };
 
 

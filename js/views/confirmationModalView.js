@@ -1,11 +1,11 @@
 // Manejo del modal de confirmacion acciones (borrado)
-export async function showConfirmationModal(message = '¿Estás seguro?',actionType='default') {
+export async function showConfirmationModal(message = '¿Estás seguro?', actionType = 'default') {
   return new Promise((resolve) => {
     const modal = document.getElementById('confirmationModal');
     const confirmBtn = modal.querySelector('[data-action="confirm"]');
-    modal.querySelector('#confirmationModal-msg').textContent=message;
+    modal.querySelector('#confirmationModal-msg').textContent = message;
 
-    confirmBtn.className='btn';
+    confirmBtn.className = 'btn';
     switch (actionType) {
       case 'delete':
         confirmBtn.classList.add('warning');
